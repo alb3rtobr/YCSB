@@ -19,6 +19,7 @@ package com.yahoo.ycsb;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
@@ -157,5 +158,11 @@ public class GoodBadUglyDB extends DB {
   public Status delete(String table, String key) {
     delay();
     return Status.OK;
+  }
+
+  @Override
+  public Status executeServerFunction(Properties functionProps) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

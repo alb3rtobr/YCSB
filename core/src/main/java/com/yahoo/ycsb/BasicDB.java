@@ -19,7 +19,6 @@ package com.yahoo.ycsb;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
@@ -361,6 +360,12 @@ public class BasicDB extends DB {
          .append(entry.getValue().toString());
     }
     return buf.toString().hashCode();
+  }
+
+  @Override
+  public Status executeServerFunction(Properties functionProps) {
+    // TODO Auto-generated method stub
+    return null;
   }
   
   /**

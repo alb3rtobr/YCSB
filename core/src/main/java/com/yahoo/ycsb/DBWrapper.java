@@ -17,7 +17,6 @@
 
 package com.yahoo.ycsb;
 
-import java.util.Map;
 import com.yahoo.ycsb.measurements.Measurements;
 import org.apache.htrace.core.TraceScope;
 import org.apache.htrace.core.Tracer;
@@ -48,6 +47,7 @@ public class DBWrapper extends DB {
   private final String scopeStringRead;
   private final String scopeStringScan;
   private final String scopeStringUpdate;
+  private final String scopeStringServerFunction;
 
   public DBWrapper(final DB db, final Tracer tracer) {
     this.db = db;
@@ -61,6 +61,7 @@ public class DBWrapper extends DB {
     scopeStringRead = simple + "#read";
     scopeStringScan = simple + "#scan";
     scopeStringUpdate = simple + "#update";
+    scopeStringServerFunction = simple + "#serverfunction";
   }
 
   /**
@@ -241,6 +242,20 @@ public class DBWrapper extends DB {
       long en = System.nanoTime();
       measure("DELETE", res, ist, st, en);
       measurements.reportStatus("DELETE", res);
+      return res;
+    }
+  }
+
+  @Override
+  public Status executeServerFunction(Properties functionProps) {
+    
+    try (final TraceScope span = tracer.newScope(scopeStringServerFunction)) {
+      long ist = measurements.getIntendedtartTimeNs();
+      long st = System.nanoTime();
+      Status res = db.executeServerFunction(functionProps);
+      long en = System.nanoTime();
+      measure("SERVERFUNCTION", res, ist, st, en);
+      measurements.reportStatus("SERVERFUNCTION", res);
       return res;
     }
   }

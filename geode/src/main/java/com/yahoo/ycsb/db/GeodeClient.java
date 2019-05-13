@@ -19,6 +19,7 @@ package com.yahoo.ycsb.db;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -43,6 +44,9 @@ import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
+import org.apache.geode.cache.execute.Execution;
+import org.apache.geode.cache.execute.FunctionService;
+import org.apache.geode.cache.execute.ResultCollector;
 import org.apache.geode.pdx.JSONFormatter;
 import org.apache.geode.pdx.PdxInstance;
 import org.apache.geode.pdx.PdxInstanceFactory;
@@ -161,6 +165,21 @@ public class GeodeClient extends DB {
     return new InetSocketAddress(matcher.group(1), Integer.parseInt(matcher.group(2)));
   }
 
+  //To be executed in the specific Geode Workload
+  @Override
+  public Status executeServerFunction(Properties functionProps) {
+    String regionName=functionProps.getProperty("regionName");
+    String functionName=functionProps.getProperty("functionName");
+
+    Region<String, PdxInstance> region = getRegion(regionName);
+    Execution execution = FunctionService.onRegion(region);
+    System.out.println("GeodeClient::executeServerFunction("+functionName+")");
+    ResultCollector<Integer, List> results = execution.execute(functionName); //List?
+
+    return Status.OK;
+  }
+
+
   @Override
   public Status read(String table, String key, Set<String> fields,
       Map<String, ByteIterator> result) {
@@ -183,7 +202,7 @@ public class GeodeClient extends DB {
 
   @Override
   public Status scan(String table, String startkey, int recordcount,
-                     Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
+      Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
     // Geode does not support scan
     return Status.ERROR;
   }
