@@ -24,7 +24,7 @@ functionproportion=100
 
 # Name of the server function to be executed.
 # Note it has to be deployed in the server before executing the workload.
-functionname=OverloadFunction
+functionname=OverloadFun
 
 # There is no default setting for recordcount but it is
 # required to be set.
@@ -36,7 +36,7 @@ recordcount=100000
 # There is no default setting for operationcount but it is
 # required to be set.
 # The number of operations to use during the run phase.
-operationcount=1000000
+operationcount=10
 
 # The number of insertions to do, if different from recordcount.
 # Used with insertstart to grow an existing table.
@@ -46,10 +46,10 @@ operationcount=1000000
 insertstart=0
 
 # The number of fields in a record
-fieldcount=100
+fieldcount=1
 
 # The size of each field (in bytes)
-fieldlength=1000
+fieldlength=10
 
 # Should read all fields
 readallfields=true
