@@ -134,6 +134,8 @@ public abstract class DB {
   public abstract Status delete(String table, String key);
 
 
-  public abstract Status executeServerFunction(Properties functionProps);
+  public Status executeServerFunction(Properties functionProps) {
+    return null;
+  }
 
 }
